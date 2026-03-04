@@ -3,7 +3,7 @@ version: "3" #permet de savoir
 services: 
 mariadb:
   image: "inception/mariadb"
-    build:
+    build: requirements/
       Dockerfile: "../services/mariadb/Dockerfile"
   volumes:
     - "mariadb:" #a completer, on ne sait pas encore ou monter ce volume dans le conteneur
