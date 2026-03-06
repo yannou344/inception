@@ -43,8 +43,9 @@ installation, and/or execution.
 
 
 Ressources :
+https://docs.docker.com/get-started/docker-overview/
 https://tuto.grademe.fr/inception/
-https://www.debian.org/releases/
+https://docs.docker.com/build/building/best-practices/
 https://alpinelinux.org/releases/
 https://docs.docker.com/engine/install/ubuntu/
 https://docs.docker.com/engine/install/linux-postinstall/
@@ -58,13 +59,17 @@ https://docs.docker.com/engine/swarm/secrets/
 https://www.digitalocean.com/community/tutorials/how-to-create-a-self-signed-ssl-certificate-for-nginx-on-debian-10
 https://blog.stephane-robert.info/docs/services/web/nginx/
 https://wiki.alpinelinux.org/wiki/Nginx
+https://hub.docker.com/_/mariadb
 AI used:
 https:://aistudio.google.com/
 prompt: "I am a 42 student and I would like you guide me to the solution giving examples or websites to dig on
 features I need to understand and apply in the current project. Caution: I don't want you give me the code solution."
 Parts of the project used with AI: 
 - secrets, CA meaning (certificate authenticity)
-- which docker version to install to be compliant with inception project?
+- docker installation
+- nginx container
+- mariaDB database
+- 
 
 
 	
