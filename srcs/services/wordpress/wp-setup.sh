@@ -10,7 +10,7 @@ do
 done
 
 # Go to the directory where WP should be
-cd WP_PATH
+cd $WP_PATH
 
 if [ ! -f wp-config.php ]; then
   #Download WordPress

@@ -1,14 +1,14 @@
 echo "Initializing database: $MYSQL_DATABASE for user: $MYSQL_USER"
 # Ensure the data directory has the right permissions inside the container
-chown -R mysql:mysql DB_PATH
+chown -R mysql:mysql $DB_PATH
 
 if [ ! -d "/var/lib/mysql/$MYSQL_DATABASE" ]; then
   echo "First run: Initializing database..."
   # Initialize system tables
-  mariadb-install-db --user=mysql --datadir=DB_PATH
+  mariadb-install-db --user=mysql --datadir=$DB_PATH
 
   # Start MariaDB in background
-  mariadbd-safe --datadir=DB_PATH --skip-networking &
+  mariadbd-safe --datadir=$DB_PATH --skip-networking &
 
   # Create the Bootstrap SQL file
   cat << EOF > /tmp/init.sql;
@@ -30,7 +30,7 @@ fi
 
 # Finally: Start the real server in the foreground
 echo "Starting MariaDB normally..."
-exec mariadbd --user=mysql --datadir=DB_PATH
+exec mariadbd --user=mysql --datadir=$DB_PATH
 
   # Wait for MariaDB to be ready
   #while ! mariadb-admin ping --silent; do
@@ -52,4 +52,4 @@ exec mariadbd --user=mysql --datadir=DB_PATH
 #fi
 # Finally: Start the real server in the foreground
 #echo "Starting MariaDB normally..."
-#exec mariadbd --user=mysql --datadir=DB_PATH
+#exec mariadbd --user=mysql --datadir=$DB_PATH

@@ -24,6 +24,6 @@ RUN sed -i "s|listen = 127.0.0.1:9000|listen = 9000|g" /etc/php82/php-fpm.d/www.
 RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar && \
     chmod +x wp-cli.phar && \
     mv wp-cli.phar /usr/local/bin/wp && \
-    mkdir -p WP_PATH
+    mkdir -p /var/www/wordpress
 COPY --chmod=+x wp-setup.sh /
 ENTRYPOINT [ "sh", "/wp-setup.sh" ]

@@ -1,5 +1,5 @@
 NAME = inception
-COMPOSE_FILE = srcs/docker-compose.yml
+COMPOSE_FILE = srcs/compose.yaml
 DATA_PATH = /home/yroard/data
 
 dirs_management:
