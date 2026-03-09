@@ -13,6 +13,11 @@ done
 cd $WP_PATH
 
 if [ ! -f wp-config.php ]; then
+  # Read the secret into a local variable
+  WP_USER_PASSWORD=$(cat /run/secrets/wordpress_password.txt)
+  WP_ADMIN_PASSWORD=$(cat /run/secrets/wordpress_root_password.txt)
+  MYSQL_PASSWORD=$(cat /run/secrets/mariadb_password.txt)
+
   #Download WordPress
   wp core download --allow-root
 
