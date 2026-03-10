@@ -1,9 +1,12 @@
 𝘛𝘩𝘪𝘴 𝘱𝘳𝘰𝘫𝘦𝘤𝘵 𝘩𝘢𝘴 𝘣𝘦𝘦𝘯 𝘤𝘳𝘦𝘢𝘵𝘦𝘥 𝘢𝘴 𝘱𝘢𝘳𝘵 𝘰𝘧 𝘵𝘩𝘦 42 𝘤𝘶𝘳𝘳𝘪𝘤𝘶𝘭𝘶𝘮 𝘣𝘺 𝘺𝘳𝘰𝘢𝘳𝘥
 
+INCEPTION 42 PROJECT
+
 Description :
 
-    Inception project helps the student to understand the interest of containers
-    when deploying a solution and especially Docker and Docker compose tools. 
+    A complete infrastructure using Docker Compose, featuring Nginx (TLS 1.2/1.3), WordPress (PHP-FPM), and MariaDB, all running on Alpine Linux.
+
+    Inception project helps the student to understand the interest of containers when deploying a solution and especially Docker and Docker compose tools. 
     Thanks to this project, the student will be able to :
         1. create different containers: 
         - a database: Mariadb, 
@@ -11,11 +14,11 @@ Description :
         - a website: WordPress
         2. link them with Docker compose
         3. use the volumes
+        4. install a virtual machine and use it for this project
 
-clearly presents the project, including its goal and a
-brief overview.
 
 Project description :
+
     Once a program has been created and passed all the tests, developer are 
     confronted to missing dependencies or OS issues when installing it on 
     another computer. Thanks to Docker, these burdens are removed! 
@@ -23,103 +26,55 @@ Project description :
     and run applications by using containers.
 
     ◦ Virtual Machines vs Docker
-        Docker containers are lightweight alternatives to Virtual Machines
-        and it uses the host OS without pre-allocating any RAM.
+        Docker containers are lightweight alternatives to Virtual Machines.
         However Docker are limited to Linux host whereas VM are not limited to.
-        VM are isolated from hardware.
+        VM are isolated from hardware, whereas docker containers use the host kernell.
 
     ◦ Secrets vs Environment Variables
-    
+        - When you pass passwords via .env, they are stored in the container's metadata. If an attacker runs "docker inspect <container_id>", they will see all your passwords (root pass, user pass, etc.) in plain text under the Env section! It is not the case if the passwords are into secrets folder: Docker mounts secrets as files in a temporary in-memory filesystem (tmpfs) at /run/secrets/. Because it is in-memory, the sensitive data is never written to the actual hard drive of the container. When the container stops, the "file" simply vanishes from the internal storage.
+        -  Often, a single .env file is loaded by all services, meaning the Nginx container might have access to the MariaDB root password even though it doesn't need it. In our compose.yaml, we explicitly choose which container gets which secret. Nginx only sees the SSL key, while MariaDB only sees the database passwords. This limits the "blast radius" if one container is compromised.
+
     ◦ Docker Network vs Host Network
+        Thanks to command "driver: bridge" into compose.yaml, Docker creates a private virtual network inside our computer. In that case:
+        - each container is isolated from the outside world unless you       explicitely open a door using "ports:" (as we do for nginx)
+        - an internal DNS server allows containers to talk to each other by name
+        Instead, by using "network_mode: host":
+        - No isolation: The container shares the host’s IP address and ports. If the container listens on port 80, your computer is now listening on port 80.
+        - No Port Mapping: You cannot use -p 8080:80. Since the container is directly on the host, it is the host.[4]
+        - The "Localhost" Rule: Inside the container, localhost refers to your real computer.
+        - Performance: It is slightly faster because there is no virtual routing layer, but it is much less secure.
 
     ◦ Docker Volumes vs Bind Mounts
+    - Docker Volumes:
+        A Volume is a storage space completely managed by Docker. You don't usually care where it is on the hard drive; you just give it a name.
+        How it looks in Compose: "driver: local" (without device options).
+    Pros:
+        * Performance: On non-Linux systems (Mac/Windows), Volumes are much faster than Bind Mounts.
+        * Isolation: The files are stored in a Docker-protected area (usually /var/lib/docker/volumes/). No "UID/GID" conflict with the host user.
+        * Lifecycle: Docker handles the creation and deletion.
+    Cons:
+        * Hidden: It is harder to find the files on the Host to verify they are there.
+        * Abstraction: You don't have direct control over the physical path on the disk.
+    - Bind Mounts
+        A Bind Mount is a direct "link" to a specific, existing path on your Host machine (your VM or iMac).
+        How it looks in Compose: "type: bind" or simply "./data:/var/lib/mysql"
+    Pros:
+        * Visibility: You can see and edit the files directly on your Host machine using ls, vim, or a file explorer.
+        * Control: You decide exactly where the files live (e.g., /home/yroard/data/mariadb). 
+    Cons:
+        * Permissions: You run into the "Permission Denied" errors because the Host user and Container user must have matching UIDs.
+        * Portability: If you hardcode /home/yroard/, your project will break on a machine where the user is named student.
+        * Dependency: The folder must exist on the Host before the container starts.
+
 
 Instructions :
 
-containing any relevant information about compilation,
-installation, and/or execution.
-On nginx terminal run:
-/Bureau/Ecole_42/PROJETS/COMMON_CORE/commonCore05/core05-inception/srcs/requirements/nginx$ docker build -t nginx .
-docker run -it -p 443:443 nginx
-Then in another terminal: "docker ps" command gives:
-CONTAINER ID   IMAGE     COMMAND                  CREATED         STATUS         PORTS                                     NAMES
-c95070b46b8c   nginx     "nginx -g 'daemon of…"   3 seconds ago   Up 3 seconds   0.0.0.0:443->443/tcp, [::]:443->443/tcp   elated_shtern
-"openssl s_client -connect localhost:443 -tls1_2"
-gives:
-"CONNECTED(00000003)
-Can't use SSL_get_servername
-depth=0 C = FR, ST = PACA, L = Nice, O = 42, CN = login.42.fr
-verify error:num=18:self-signed certificate
-verify return:1
-depth=0 C = FR, ST = PACA, L = Nice, O = 42, CN = login.42.fr
-verify return:1
----
-Certificate chain
-0 s:C = FR, ST = PACA, L = Nice, O = 42, CN = login.42.fr
-i:C = FR, ST = PACA, L = Nice, O = 42, CN = login.42.fr
-a:PKEY: rsaEncryption, 2048 (bit); sigalg: RSA-SHA256
-v:NotBefore: Mar  5 17:23:20 2026 GMT; NotAfter: Apr  4 17:23:20 2026 GMT
----
-Server certificate
------BEGIN CERTIFICATE-----
-MIIDfTCCAmWgAwIBAgIUDlC6a48yx3qyWLQ/F8m/MJTSySkwDQYJKoZIhvcNAQEL
-BQAwTjELMAkGA1UEBhMCRlIxDTALBgNVBAgMBFBBQ0ExDTALBgNVBAcMBE5pY2Ux
-CzAJBgNVBAoMAjQyMRQwEgYDVQQDDAtsb2dpbi40Mi5mcjAeFw0yNjAzMDUxNzIz
-MjBaFw0yNjA0MDQxNzIzMjBaME4xCzAJBgNVBAYTAkZSMQ0wCwYDVQQIDARQQUNB
-MQ0wCwYDVQQHDAROaWNlMQswCQYDVQQKDAI0MjEUMBIGA1UEAwwLbG9naW4uNDIu
-ZnIwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCrm6pxaXzlq+w+ydiF
-Qwhg0sLJMEGkCQhjBJ8V+NzpZ+UMnMRv4wPZ9N8ISzhIafeUU884iuiryGArvgrj
-DW+H7FWYvabzq+OnlhqoCW3N6SWyMyQgjmmF+O0UAMxfHwdHCOkcThwwITTSKh1A
-bP5LwTjyk6ZxokzgzHB+/JjHwdiuu6HYHpYglON9MDCJNd+4Ix8ZTl8sZFqr70eO
-pYKFwWHlJLEWdm0ax9A0ZDXZfdiL77w1HI2Z73WgX5yCxPBT1aga7eFEVS3J6Sp2
-ZzkxSezsjm8JSPK8iFdyXZpIGRDi/7CFJrrj6EO9ADYTA4LKtrxz6JiJJOPdxiNs
-1Rr9AgMBAAGjUzBRMB0GA1UdDgQWBBS9sySzhYt2MrkHnNlrHtzFnIPo0DAfBgNV
-HSMEGDAWgBS9sySzhYt2MrkHnNlrHtzFnIPo0DAPBgNVHRMBAf8EBTADAQH/MA0G
-CSqGSIb3DQEBCwUAA4IBAQCkgXONv001/3IoLkX+jUCY7kzAAho+EitQzRzRuelK
-9B6cgOco8caFjMMultpMRymfo0fKzMlyyO/OrJwdmbzvWsPY/RPIobNWh9uGuL/O
-5YmOR84YfAQOgstdrLrc1X/0Lwa9rOSuqABmTX/zWVU8zCwXBY3i2YBnLu2qpglG
-DGfRvJT4qH3g9RgMsf+Br3N98URHhfsvdGhwrW63bUMlbgA2ki1hC9hq+rwGssxY
-bmqip7btnnIfdBmvvrcjfhUDOA+7K+mq/P2mNHOHRtGPju2itdAjsjuW6c6c4JsK
-/CDyW0d6QcJLZZ+KWq1yx/YL4CPFadq1Dsft6V5sT7QK
------END CERTIFICATE-----
-subject=C = FR, ST = PACA, L = Nice, O = 42, CN = login.42.fr
-issuer=C = FR, ST = PACA, L = Nice, O = 42, CN = login.42.fr
----
-No client certificate CA names sent
-Peer signing digest: SHA256
-Peer signature type: RSA-PSS
-Server Temp Key: X25519, 253 bits
----
-SSL handshake has read 1375 bytes and written 281 bytes
-Verification error: self-signed certificate
----
-New, TLSv1.2, Cipher is ECDHE-RSA-AES256-GCM-SHA384
-Server public key is 2048 bit
-Secure Renegotiation IS supported
-Compression: NONE
-Expansion: NONE
-No ALPN negotiated
-SSL-Session:
-Protocol  : TLSv1.2
-Cipher    : ECDHE-RSA-AES256-GCM-SHA384
-Session-ID: 300AEAF8985C0700F1E54B436F9EAB1BA808B240B3151EF2D28B5AD29FF12A5A
-Session-ID-ctx:
-Master-Key: EF59A079532CC54471F559417D55BFFE4AE07D371010BD8D166739516EEBE07F8FA821999A635FA7BC70DA1810AC4214
-PSK identity: None
-PSK identity hint: None
-SRP username: None
-Start Time: 1772891935
-Timeout   : 7200 (sec)
-Verify return code: 18 (self-signed certificate)
-Extended master secret: yes
----
-closed"
-
-
+See DEV_DOC or USER_DOC
 
 
 
 Ressources :
+
 Understanding Docker:
 https://docs.docker.com/get-started/docker-overview/
 https://docs.docker.com/build/building/best-practices/
@@ -159,18 +114,29 @@ https://developer.wordpress.org/cli/commands/config/create/
 Help on Docker compose:
 https://docs.docker.com/compose/intro/compose-application-model/
 https://docs.docker.com/compose/how-tos/startup-order/
+Help on Virtual Box(VM):
+https://www.virtualbox.org/manual/ch01.html
+https://wiki.debian.org/DebianInstaller
+https://www.qemu.org/docs/master/system/invocation.html
+https://wiki.debian.org/QEMU
+
+
 
 AI used:
 https:://aistudio.google.com/
-prompt: "I am a 42 student and I would like you guide me to the solution giving examples or websites to dig on
-features I need to understand and apply in the current project. Caution: I don't want you give me the code solution."
+prompt: "I am a 42 student and I would like you guide me to the solution giving examples or websites to dig on features I need to understand and apply in the current project. Caution: I don't want you give me the code solution."
 Parts of the project used with AI:
-- readme
-- secrets, CA meaning (certificate authenticity)
-- docker installation
+- readme:
+    ◦ Virtual Machines vs Docker
+    ◦ Secrets vs Environment Variables
+    ◦ Docker Network vs Host Network
+    ◦ Docker Volumes vs Bind Mounts
+- Docker installation
 - nginx container creation
 - mariaDB database creation
-- makefile creation
+- wordpress creation
+- Makefile creation
+- Virtual Machine Installation
 
 
 	

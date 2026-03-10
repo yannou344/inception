@@ -2,7 +2,7 @@ NAME = inception
 COMPOSE_FILE = srcs/compose.yaml
 DATA_PATH = /home/yroard/data
 SECRETS_PATH = ./secrets
-DOMAIN_NAME=yroard.42.fr
+DOMAIN_NAME = yroard.42.fr
 
 dirs_management:
 	@if [ ! -d $(DATA_PATH) ]; then \
@@ -20,46 +20,37 @@ build:
 		@mkdir -p $(DATA_PATH)/wordpress $(DATA_PATH)/mariadb
 		docker compose -p $(NAME) -f $(COMPOSE_FILE) up -d --build
 
-up: dirs_management secrets
-		docker compose -p $(NAME) -f $(COMPOSE_FILE) up -d
-
-down:
-		docker compose -p $(NAME) -f $(COMPOSE_FILE) down
-
 stop:
 		docker compose -p $(NAME) -f $(COMPOSE_FILE) stop
 
 restart:
 		docker compose -p $(NAME) -f $(COMPOSE_FILE) restart
 
+
+up: dirs_management secrets
+		docker compose -p $(NAME) -f $(COMPOSE_FILE) up -d
+
 logs:
 		docker compose -p $(NAME) -f $(COMPOSE_FILE) logs -f
 
+down:
+		docker compose -p $(NAME) -f $(COMPOSE_FILE) down
+
 #Clean and reset
-clean: down
-	@echo "Cleaning Docker system and data directories..."
-	docker system prune -af
-	docker volume prune -f
-	sudo rm -rf $(DATA_PATH)
+clean: 
+	@echo "Removes containers, networks, and volumes (wipes data)..."
+	docker compose -p $(NAME) -f $(COMPOSE_FILE) down -v
+	@sudo rm -rf $(DATA_PATH)
+
 
 fclean: clean
-	@echo "Full cleanup: removing containers, networks, volumes, and images..."
-	docker rm -f $$(docker ps -aq) 2>/dev/null || true
-	docker network prune -f
-	docker system prune -af --volumes
+	@echo "Full purge: cleaning + removing images + removing secrets..."
+	docker system prune -af
+
+cleanSecrets:
 	@sudo rm -rf $(SECRETS_PATH)
 
 re: fclean all
-
-#Hard reset
-reset:
-	@echo "Performing full reset: stopping, removing, pruning..."
-	-docker compose -p $(NAME) -f $(COMPOSE_FILE) down --volumes --remove-orphans
-	docker system prune -af --volumes
-	sudo rm -rf $(DATA_PATH)
-
-fullreset: reset all
-	@echo "Full reset complete. Your project is now clean and rebuilt."
 
 # Add a target to generate the SSL certificate
 secrets:
@@ -71,10 +62,6 @@ secrets:
 			-out $(SECRETS_PATH)/inception.crt \
 			-subj "/C=FR/ST=PACA/L=Nice/O=42/OU=42/CN=$(DOMAIN_NAME)/UID=yroard"; \
 		echo "Generating secret files..."; \
-		#touch $(SECRETS_PATH)/mariadb_password.txt; \
-		#touch $(SECRETS_PATH)/mariadb_root_password.txt; \
-		#touch $(SECRETS_PATH)/wordpress_password.txt; \
-		#touch $(SECRETS_PATH)/wordpress_root_password.txt; \
 		head -c 16 /dev/urandom | base64 > $(SECRETS_PATH)/mariadb_password.txt; \
 		head -c 16 /dev/urandom | base64 > $(SECRETS_PATH)/mariadb_root_password.txt; \
 		head -c 16 /dev/urandom | base64 > $(SECRETS_PATH)/wordpress_password.txt; \
