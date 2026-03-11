@@ -56,7 +56,13 @@ command: "Docker ps"
 
 
 Testing the project
+
 - Web access: https://yroard.42.fr
+
 - SSL Check: TLS version verification
     "openssl s_client -connect localhost:443 -tls1_2"
+
 - Database Persistence: make down then make up, the data should be kept into Wordpress website.
+
+- PID1 and signal handling
+By using exec command into mariaDB setup script, the shell process is replaced with the MariaDB process. This makes MariaDB Process ID 1. This is crucial because when you run docker stop, Docker sends a signal (SIGTERM) to PID 1. If MariaDB is PID 1, it shuts down cleanly. If MariaDB was a sub-process of a shell, it might be killed instantly, potentially corrupting the database.

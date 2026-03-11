@@ -46,7 +46,7 @@ USER DOCUMENTATION
 
 5. Service Verification (Health Checks)
 
-    Once accessed to website, we can check the following:
+    Once accessed to website(https://yroard.42.fr), we can check the following:
 
     Status Check: Use "docker ps". All three containers should show Up status.
 

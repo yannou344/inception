@@ -1,5 +1,10 @@
 services:
   mariadb:
+    secrets:
+    - source: mariadb_password
+      target: mariadb_password.txt
+    - source: mariadb_root_password
+      target: mariadb_root_password.txt
     container_name: mariadb
     networks:
       - inception
@@ -15,13 +20,18 @@ services:
       - "3306"
 
   nginx:
+    secrets:
+      - source: inception_crt  # Reference the name defined below
+        target: inception.crt
+      - source: inception_key
+        target: inception.key
     container_name: nginx
     volumes:
       - wordpress:/var/www/wordpress #&{WP_PATH}
     networks:
       - inception
     depends_on:
-      - wordpress
+    - wordpress
     build:
       context: services/nginx
       dockerfile: Dockerfile
@@ -32,6 +42,9 @@ services:
     restart: on-failure
 
   wordpress:
+    secrets:
+      - wordpress_password
+      - wordpress_root_password
     container_name: wordpress
     volumes:
       - wordpress:/var/www/wordpress #${WP_PATH}
@@ -68,10 +81,14 @@ networks:
 
 secrets:
   mariadb_password: #MYSQL_PASSWORD
-    file: ./secrets/mariadb_password.txt
+    file: ../secrets/mariadb_password.txt
   mariadb_root_password: #MYSQL_ROOT_PASSWORD
-    file: ./secrets/mariadb_root_password.txt
+    file: ../secrets/mariadb_root_password.txt
   wordpress_password: #WP_USER_PASSWORD
-    file: ./secrets/wordpress_password.txt
+    file: ../secrets/wordpress_password.txt
   wordpress_root_password: #WP_ADMIN_PASSWORD
-    file: ./secrets/mariadb_root_password.txt
+    file: ../secrets/wordpress_root_password.txt
+  inception_crt:
+    file: ../secrets/inception.crt
+  inception_key:
+    file: ../secrets/inception.key

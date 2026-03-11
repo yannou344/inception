@@ -34,7 +34,8 @@ logs:
 		docker compose -p $(NAME) -f $(COMPOSE_FILE) logs -f
 
 down:
-		docker compose -p $(NAME) -f $(COMPOSE_FILE) down
+	@echo "Removes containers and network..."
+	docker compose -p $(NAME) -f $(COMPOSE_FILE) down
 
 #Clean and reset
 clean: 
@@ -68,4 +69,4 @@ secrets:
 		head -c 16 /dev/urandom | base64 > $(SECRETS_PATH)/wordpress_root_password.txt; \
 	fi
 
-.PHONY: all build up down stop restart logs clean fclean re reset fullreset dirs_management secrets
+.PHONY: all build up down stop restart logs clean fclean re dirs_management secrets cleanSecrets

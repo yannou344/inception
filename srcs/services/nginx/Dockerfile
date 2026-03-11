@@ -6,9 +6,6 @@ RUN apk update && apk add --no-cache \
       curl\
       openssl &&\
       mkdir -p /etc/nginx/ssl &&\
-      #openssl req -x509 -nodes -out /etc/nginx/ssl/inception.crt \
-      #    -keyout /etc/nginx/ssl/inception.key \
-      #    -subj "/C=FR/ST=PACA/L=Nice/O=42/CN=yroard.42.fr" &&\
       mkdir -p /var/run/nginx
 
 COPY conf/nginx.conf /etc/nginx/http.d/default.conf
