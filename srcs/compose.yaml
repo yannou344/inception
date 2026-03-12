@@ -43,8 +43,12 @@ services:
 
   wordpress:
     secrets:
-      - wordpress_password
-      - wordpress_root_password
+      - source: wordpress_password
+        target: wordpress_password.txt
+      - source: wordpress_root_password
+        target: wordpress_root_password.txt
+      - source: mariadb_password
+        target: mariadb_password.txt
     container_name: wordpress
     volumes:
       - wordpress:/var/www/wordpress #${WP_PATH}

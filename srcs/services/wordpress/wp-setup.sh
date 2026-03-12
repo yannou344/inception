@@ -1,3 +1,4 @@
+set -e
 echo "Initializing database: $MYSQL_DATABASE for user: $MYSQL_USER"
 # Wait for a few seconds to ensure MariaDB is up (Next step: use a real wait-loop)
 #sleep 10
@@ -11,6 +12,9 @@ done
 
 # Go to the directory where WP should be
 cd $WP_PATH
+
+
+chown -R www-data:www-data /var/www/wordpress
 
 if [ ! -f wp-config.php ]; then
   # Read the secret into a local variable
@@ -30,7 +34,7 @@ if [ ! -f wp-config.php ]; then
 
   #Install wordpress
   wp core install --allow-root \
-        --url=localhost:4443 \
+        --url=$DOMAIN_NAME \
         --title=$SITE_TITLE \
         --admin_user=$WP_ADMIN_USER \
         --admin_password=$WP_ADMIN_PASSWORD \

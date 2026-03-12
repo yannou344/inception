@@ -16,16 +16,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="15982840-c162-4aea-9665-147cf09c7040" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/Makefile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/documentation/Inception_Lien_final" beforeDir="false" afterPath="$PROJECT_DIR$/documentation/Inception_Lien_final" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/documentation/Inception_Lien_final/srcs/requirements/mariadb/tools/mariadb.sh" beforeDir="false" afterPath="$PROJECT_DIR$/documentation/Inception_Lien_final/srcs/requirements/mariadb/tools/mariadb.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/srcs/.env" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/srcs/compose.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/srcs/compose.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/srcs/services/mariaDB/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/srcs/services/mariaDB/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/srcs/services/mariaDB/conf/mariaDB.conf" beforeDir="false" afterPath="$PROJECT_DIR$/srcs/services/mariaDB/conf/mariaDB.conf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/srcs/services/mariaDB/mdb-setup.sh" beforeDir="false" afterPath="$PROJECT_DIR$/srcs/services/mariaDB/mdb-setup.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/srcs/services/nginx/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/srcs/services/nginx/Dockerfile" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/srcs/services/nginx/conf/nginx.conf" beforeDir="false" afterPath="$PROJECT_DIR$/srcs/services/nginx/conf/nginx.conf" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/srcs/services/wordpress/wp-setup.sh" beforeDir="false" afterPath="$PROJECT_DIR$/srcs/services/wordpress/wp-setup.sh" afterDir="false" />
     </list>
@@ -97,7 +91,7 @@
       <workItem from="1772656270842" duration="10462000" />
       <workItem from="1772701632283" duration="22088000" />
       <workItem from="1772891209514" duration="48591000" />
-      <workItem from="1773076544133" duration="15103000" />
+      <workItem from="1773076544133" duration="20194000" />
     </task>
     <servers />
   </component>
