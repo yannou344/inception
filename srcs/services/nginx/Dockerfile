@@ -5,13 +5,12 @@ RUN apk update && apk add --no-cache \
       vim \
       curl\
       openssl &&\
-      mkdir -p /etc/nginx/ssl &&\
       mkdir -p /var/run/nginx
 
 COPY conf/nginx.conf /etc/nginx/http.d/default.conf
-RUN mkdir -p /var/www/html
-RUN chmod 755 /var/www/html
-RUN chown -R nginx:nginx /var/www/html
+RUN mkdir -p /var/www/wordpress
+RUN chmod 755 /var/www/wordpress
+RUN chown -R nginx:nginx /var/www/wordpress
 
 #Allows nginx to be launched in foreground
 CMD [ "nginx", "-g", "daemon off;" ]

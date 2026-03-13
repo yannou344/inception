@@ -25,5 +25,5 @@ RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli
     chmod +x wp-cli.phar && \
     mv wp-cli.phar /usr/local/bin/wp && \
     mkdir -p /var/www/wordpress
-COPY --chmod=+x wp-setup.sh /
-ENTRYPOINT [ "sh", "/wp-setup.sh" ]
+COPY --chmod=+x tools/ /tools/ 
+ENTRYPOINT [ "sh", "/tools/wp-setup.sh" ]

@@ -1,9 +1,27 @@
 NAME = inception
-COMPOSE_FILE = srcs/compose.yaml
+COMPOSE_FILE = srcs/docker-compose.yml
 DATA_PATH = /home/yroard/data
 SECRETS_PATH = ./secrets
 DOMAIN_NAME = yroard.42.fr
 
+# Update 'all' to ensure secrets are generated before building
+all:  secrets dirs_management build
+
+secrets:
+	@mkdir -p $(SECRETS_PATH)
+	@if [ ! -f $(SECRETS_PATH)/inception.key ]; then \
+		echo "Generating SSL certificates..."; \
+		openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+			-keyout $(SECRETS_PATH)/inception.key \
+			-out $(SECRETS_PATH)/inception.crt \
+			-subj "/C=FR/ST=PACA/L=Nice/O=42/OU=42/CN=$(DOMAIN_NAME)/UID=yroard"; \
+		echo "Generating secret files..."; \
+		head -c 16 /dev/urandom | base64 > $(SECRETS_PATH)/mariadb_password.txt; \
+		head -c 16 /dev/urandom | base64 > $(SECRETS_PATH)/mariadb_root_password.txt; \
+		head -c 16 /dev/urandom | base64 > $(SECRETS_PATH)/wordpress_password.txt; \
+		head -c 16 /dev/urandom | base64 > $(SECRETS_PATH)/wordpress_root_password.txt; \
+	fi
+	
 dirs_management:
 	@if [ ! -d $(DATA_PATH) ]; then \
     		echo "Creating $(DATA_PATH) with admin rights"; \
@@ -12,10 +30,7 @@ dirs_management:
     	else \
     		echo "$(DATA_PATH) already exists."; \
     	fi
-
-# Update 'all' to ensure secrets are generated before building
-all: dirs_management secrets build
-
+    	
 build:
 		@mkdir -p $(DATA_PATH)/wordpress $(DATA_PATH)/mariadb
 		docker compose -p $(NAME) -f $(COMPOSE_FILE) up -d --build
@@ -54,19 +69,6 @@ cleanSecrets:
 re: fclean all
 
 # Add a target to generate the SSL certificate
-secrets:
-	@mkdir -p $(SECRETS_PATH)
-	@if [ ! -f $(SECRETS_PATH)/inception.key ]; then \
-		echo "Generating SSL certificates..."; \
-		openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
-			-keyout $(SECRETS_PATH)/inception.key \
-			-out $(SECRETS_PATH)/inception.crt \
-			-subj "/C=FR/ST=PACA/L=Nice/O=42/OU=42/CN=$(DOMAIN_NAME)/UID=yroard"; \
-		echo "Generating secret files..."; \
-		head -c 16 /dev/urandom | base64 > $(SECRETS_PATH)/mariadb_password.txt; \
-		head -c 16 /dev/urandom | base64 > $(SECRETS_PATH)/mariadb_root_password.txt; \
-		head -c 16 /dev/urandom | base64 > $(SECRETS_PATH)/wordpress_password.txt; \
-		head -c 16 /dev/urandom | base64 > $(SECRETS_PATH)/wordpress_root_password.txt; \
-	fi
 
-.PHONY: all build up down stop restart logs clean fclean re dirs_management secrets cleanSecrets
+
+.PHONY: all build secrets up down stop restart logs clean fclean re dirs_management cleanSecrets

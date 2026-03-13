@@ -15,20 +15,22 @@ USER DOCUMENTATION
     In a terminal, make "sudo echo "127.0.0.1 yroard.42.fr" >> /etc/hosts" to map the domain
 
     Thanks to Makefile: In a terminal, at the root of the project, make the following commands:
-        "make" to start the stack(images are built, volumes/networks are created, and starts services).
+    - make: to start the stack(images are built, volumes/networks are created, and starts services).
 
-        "make down" to stop the stack(containers and networks are removed) or make stop (container objects remain on the disk in a Exited state). Differences can be seen thanks to command "docker ps -a"
+    - make down: to remove the stack(containers and networks are removed) or make stop (container objects remain on the disk in a Exited state). Differences can be seen thanks to command "docker ps -a"
 
-        "make re" to full Reset(everything is removed, even the data placed in bind mounts, and all is restarted from scratch, out of the passwords and SSL certificated).
+    - make up: to create containers.
 
-        "make cleanSecrets" to remove the current passwords and SSL certificates.
+    - make re: to full Reset(everything is removed, even the data placed in bind mounts, and all is restarted from scratch, out of the passwords and SSL certificated).
+
+    - make cleanSecrets: to remove the current passwords and SSL certificates.
     
 
 3. Accessing the Website
 
     Public Site: https://yroard.42.fr (Mention the SSL warning is normal for self-signed certificates).
 
-    Admin Dashboard: https://yroard.42.fr/wp-admin (Where the administrator manages content).
+    Admin Dashboard: https://yroard.42.fr/wp-admin and enter adminlogin and admin password to access it.
 
 
 4. Credential Management
@@ -46,7 +48,7 @@ USER DOCUMENTATION
 
 5. Service Verification (Health Checks)
 
-    Once accessed to website(https://yroard.42.fr), we can check the following:
+    Once accessed to website, we can check the following:
 
     Status Check: Use "docker ps". All three containers should show Up status.
 
