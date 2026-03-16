@@ -7,7 +7,8 @@ Operating System:
 Domain Mapping: 
 - "127.0.0.1 yroard.42.fr" into /etc/hosts file.
 Docker Engine: 
-- Official Docker Engine (and the compose plugin) is required. See: https://docs.docker.com/engine/install/ubuntu/ and follow "Install using the apt repository"
+- Official Docker Engine (and the compose plugin) is required. 
+See: https://docs.docker.com/engine/install/ubuntu/ and follow "Install using the apt repository"
 - Setup a SSH port into VM network to be able to extract the data from the host into the VM. Host port 42421 ; Guest port: 22; 
 
 
@@ -16,6 +17,23 @@ SET UP
 Into Host terminal:
 - git clone the project into a goinfre subfolder.
 - run "scp -P 42421 -r ~/goinfre/<subfolder> <VM_user>@127.0.0.1:~/inception"
+- Into the project folder, into srcs folder, add a .env file with the following data:
+# Domain configuration
+DOMAIN_NAME=<login>.42.fr
+
+# MySQL/MariaDB configuration
+MYSQL_DATABASE=<to be defined>
+MYSQL_USER=<to be defined>
+
+# WordPress configuration
+WP_ADMIN_USER=<to be defined>
+WP_ADMIN_EMAIL=<to be defined>
+WP_USER=<to be defined>
+WP_USER_EMAIL=<to be defined>
+
+# Paths
+WP_PATH=<to be defined>
+DB_PATH=<to be defined>
 
 Into Virtual Machine:
 

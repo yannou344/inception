@@ -32,7 +32,7 @@ if [ ! -f wp-config.php ]; then
 
   #Install wordpress
   wp core install --allow-root \
-        --url=$DOMAIN_NAME \
+        --url=https://$DOMAIN_NAME \
         --title=$SITE_TITLE \
         --admin_user=$WP_ADMIN_USER \
         --admin_password=$WP_ADMIN_PASSWORD \

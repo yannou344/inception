@@ -11,22 +11,45 @@ USER DOCUMENTATION
 
 2. Getting Started (Start & Stop)
 
-    Prerequisite: 
-    In a terminal, make "sudo echo "127.0.0.1 yroard.42.fr" >> /etc/hosts" to map the domain
+    Prerequisites:
+   - into the host machine:
+     - git clone the project into a goinfre subfolder.
+     - Into the project folder, into srcs folder, add a .env file with the following data:
+# Domain configuration
+DOMAIN_NAME=<login>.42.fr
 
-    Thanks to Makefile: In a terminal, at the root of the project, make the following commands:
-    - make: to start the stack(images are built, volumes/networks are created, and starts services).
+# MySQL/MariaDB configuration
+MYSQL_DATABASE=<to be defined>
+MYSQL_USER=<to be defined>
 
-    - make down: to remove the stack(containers and networks are removed) or make stop (container objects remain on the disk in a Exited state). Differences can be seen thanks to command "docker ps -a"
+# WordPress configuration
+WP_ADMIN_USER=<to be defined>
+WP_ADMIN_EMAIL=<to be defined>
+WP_USER=<to be defined>
+WP_USER_EMAIL=<to be defined>
 
-    - make up: to create containers.
+# Paths
+WP_PATH=<to be defined>
+DB_PATH=<to be defined>
 
-    - make re: to full Reset(everything is removed, even the data placed in bind mounts, and all is restarted from scratch, out of the passwords and SSL certificated).
+   - run "scp -P 42421 -r ~/goinfre/<subfolder> <VM_user>@127.0.0.1:~/inception"
+   - run "sudo echo "127.0.0.1 yroard.42.fr" >> /etc/hosts" to map the domain
 
-    - make cleanSecrets: to remove the current passwords and SSL certificates.
+   - into the VM:
+   Makefile: 
+   In a terminal, at the root of the project, make the following commands:
+     - make: to start the stack(images are built, volumes/networks are created, and starts services).
+
+     - make down: to remove the stack(containers and networks are removed) or make stop (container objects remain on the disk in a Exited state). Differences can be seen thanks to command "docker ps -a"
+
+     - make up: to create containers.
+
+     - make re: to full Reset(everything is removed, even the data placed in bind mounts, and all is restarted from scratch, out of the passwords and SSL certificated).
+
+     - make cleanSecrets: to remove the current passwords and SSL certificates.
     
 
-3. Accessing the Website
+3. Accessing the Website (into the VM)
 
     Public Site: https://yroard.42.fr (Mention the SSL warning is normal for self-signed certificates).
 
@@ -44,7 +67,7 @@ USER DOCUMENTATION
 
     Security Note: these files should never be committed to a public repository.
 
-    Modification: Tell the user that if they want to change a password, they should edit the file in ./secrets/ and run make down and make up to take this change into account.
+    Modification: Tell the user that if they want to change a password, they should edit the file in ./secrets/ and run make re to take this change into account.
 
 5. Service Verification (Health Checks)
 

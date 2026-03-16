@@ -69,7 +69,42 @@ Project description :
 
 Instructions :
 
-See DEV_DOC or USER_DOC
+    Prerequisites:
+- into the host machine:
+    - git clone the project into a goinfre subfolder.
+    - Into the project folder, into srcs folder, add a .env file with the following data:
+# Domain configuration
+DOMAIN_NAME=<login>.42.fr
+
+# MySQL/MariaDB configuration
+MYSQL_DATABASE=<to be defined>
+MYSQL_USER=<to be defined>
+
+# WordPress configuration
+WP_ADMIN_USER=<to be defined>
+WP_ADMIN_EMAIL=<to be defined>
+WP_USER=<to be defined>
+WP_USER_EMAIL=<to be defined>
+
+# Paths
+WP_PATH=<to be defined>
+DB_PATH=<to be defined>
+    - run "scp -P 42421 -r ~/goinfre/<subfolder> <VM_user>@127.0.0.1:~/inception"
+- into the VM:
+  In a terminal, make "sudo echo "127.0.0.1 yroard.42.fr" >> /etc/hosts" to map the domain
+
+
+Makefile:
+In a terminal, at the root of the project, make the following commands:
+- make: to start the stack(images are built, volumes/networks are created, and starts services).
+
+         - make down: to remove the stack(containers and networks are removed) or make stop (container objects remain on the disk in a Exited state). Differences can be seen thanks to command "docker ps -a"
+
+         - make up: to create containers.
+
+         - make re: to full Reset(everything is removed, even the data placed in bind mounts, and all is restarted from scratch, out of the passwords and SSL certificated).
+
+         - make cleanSecrets: to remove the current passwords and SSL certificates.
 
 
 
