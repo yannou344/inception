@@ -1,6 +1,6 @@
 NAME = inception
 COMPOSE_FILE = srcs/docker-compose.yml
-DATA_PATH = /home/yroard/data
+DATA_PATH = /home/yroard/
 SECRETS_PATH = ./secrets
 DOMAIN_NAME = yroard.42.fr
 
@@ -25,7 +25,7 @@ secrets:
 dirs_management:
 	@if [ ! -d $(DATA_PATH) ]; then \
     		echo "Creating $(DATA_PATH) with admin rights"; \
-    		sudo mkdir -p $(DATA_PATH)/wordpress $(DATA_PATH)/mariadb; \
+    		sudo mkdir -p $(DATA_PATH)/wordpress $(DATA_PATH)/mariadb $(DATA_PATH)/static_website; \
     		sudo chown -R $(USER):$(USER) $(DATA_PATH); \
     	else \
     		echo "$(DATA_PATH) already exists."; \

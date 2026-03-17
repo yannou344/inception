@@ -5,7 +5,8 @@ PREREQUESITES
 Operating System: 
 - Ubuntu VM with 4 CPUs, 25Gb Hard disk and 8 Gb ram 
 Domain Mapping: 
-- "127.0.0.1 yroard.42.fr" into /etc/hosts file.
+- "127.0.0.1 yroard.42.fr" into /etc/hosts file
+- "127.0.0.1 static.yroard.42.fr" into /etc/hosts file for bonus part
 Docker Engine: 
 - Official Docker Engine (and the compose plugin) is required. 
 See: https://docs.docker.com/engine/install/ubuntu/ and follow "Install using the apt repository"

@@ -27,7 +27,7 @@ services:
         target: inception.key
     container_name: NGINX
     volumes:
-      - wordpress:/var/www/wordpress #&{WP_PATH}
+      - wordpress:/var/www/wordpress
     networks:
       - inception
     depends_on:
@@ -65,6 +65,18 @@ services:
     image: "inception/wordpress"
     restart: on-failure
 
+  static_website:
+    container_name: StaticWebSite
+    networks:
+      - inception
+    build:
+      context: services/bonus/static_website
+      dockerfile: Dockerfile
+    expose:
+      - "8080"
+    image: "inception/static_website"
+    restart: on-failure
+
 volumes:
   wordpress:
     driver: local
@@ -78,6 +90,12 @@ volumes:
       type: 'none'
       o: 'bind'
       device: '/home/yroard/data/mariadb'
+  static_website:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: '/home/yroard/data/static_website'
 
 networks:
   inception:

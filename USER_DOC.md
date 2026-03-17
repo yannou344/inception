@@ -33,9 +33,11 @@ WP_PATH=<to be defined>
 DB_PATH=<to be defined>
 
    - run "scp -P 42421 -r ~/goinfre/<subfolder> <VM_user>@127.0.0.1:~/inception"
-   - run "sudo echo "127.0.0.1 yroard.42.fr" >> /etc/hosts" to map the domain
 
    - into the VM:
+     - run "sudo echo "127.0.0.1 yroard.42.fr" >> /etc/hosts" to map the domain
+     - run "sudo echo "127.0.0.1 yroard.42.fr" >> /etc/hosts" to map the domain (bonus part)
+   
    Makefile: 
    In a terminal, at the root of the project, make the following commands:
      - make: to start the stack(images are built, volumes/networks are created, and starts services).
