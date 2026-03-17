@@ -1,6 +1,6 @@
 NAME = inception
 COMPOSE_FILE = srcs/docker-compose.yml
-DATA_PATH = /home/yroard/
+DATA_PATH = /home/yroard/data
 SECRETS_PATH = ./secrets
 DOMAIN_NAME = yroard.42.fr
 

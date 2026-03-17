@@ -38,8 +38,8 @@ DB_PATH=<to be defined>
      - run "sudo echo "127.0.0.1 yroard.42.fr" >> /etc/hosts" to map the domain
      - run "sudo echo "127.0.0.1 yroard.42.fr" >> /etc/hosts" to map the domain (bonus part)
    
-   Makefile: 
-   In a terminal, at the root of the project, make the following commands:
+    Makefile: 
+    In a terminal, at the root of the project, make the following commands:
      - make: to start the stack(images are built, volumes/networks are created, and starts services).
 
      - make down: to remove the stack(containers and networks are removed) or make stop (container objects remain on the disk in a Exited state). Differences can be seen thanks to command "docker ps -a"
@@ -69,7 +69,7 @@ DB_PATH=<to be defined>
 
     Security Note: these files should never be committed to a public repository.
 
-    Modification: Tell the user that if they want to change a password, they should edit the file in ./secrets/ and run make re to take this change into account.
+    Modification: to change a password, edit the file in ./secrets/ and run make re to take this change into account.
 
 5. Service Verification (Health Checks)
 

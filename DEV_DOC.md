@@ -4,13 +4,16 @@ PREREQUESITES
 
 Operating System: 
 - Ubuntu VM with 4 CPUs, 25Gb Hard disk and 8 Gb ram 
+
 Domain Mapping: 
 - "127.0.0.1 yroard.42.fr" into /etc/hosts file
 - "127.0.0.1 static.yroard.42.fr" into /etc/hosts file for bonus part
+
 Docker Engine: 
 - Official Docker Engine (and the compose plugin) is required. 
 See: https://docs.docker.com/engine/install/ubuntu/ and follow "Install using the apt repository"
 - Setup a SSH port into VM network to be able to extract the data from the host into the VM. Host port 42421 ; Guest port: 22; 
+- run "sudo usermod -aG docker $USER" to avoid permission denials while launching Makefile
 
 
 SET UP
@@ -59,7 +62,8 @@ Into Virtual Machine:
 
     - docker ps: shows all current running containers
     - docker logs <container>: shows all the logs since its start
-    - docker -it <container> sh: enter into a container
+    - docker -it <container> sh: enter into a container not running
+    - docker exec -it <container> sh: enter into a container running
 
     - Inside a container: 
         - ls -la /run/secrets/: secrets are mounted but not "baked" into the image.
